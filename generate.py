@@ -396,7 +396,7 @@ def generate_images(
         if seeds is not None:
             print ('Warning: --seeds is ignored when using --projected-w')
         print(f'Generating images from projected W "{projected_w}"')
-        ws = np.load(projected_w)['w']
+        ws = np.load(projected_w, allow_pickle=True)['w']
         ws = torch.tensor(ws, device=device) # pylint: disable=not-callable
         assert ws.shape[1:] == (G.num_ws, G.w_dim)
         for idx, w in enumerate(ws):
