@@ -19,6 +19,7 @@ import numpy as np
 from numpy import linalg
 import PIL.Image
 import torch
+from tqdm import tqdm
 
 import legacy
 
@@ -399,7 +400,7 @@ def generate_images(
         ws = np.load(projected_w, allow_pickle=True)['w']
         ws = torch.tensor(ws, device=device) # pylint: disable=not-callable
         assert ws.shape[1:] == (G.num_ws, G.w_dim)
-        for idx, w in enumerate(ws):
+        for idx, w in tqdm(enumerate(ws)):
             img = G.synthesis(w.unsqueeze(0), noise_mode=noise_mode)
             img = (img.permute(0, 2, 3, 1) * 127.5 + 128).clamp(0, 255).to(torch.uint8)
             #img = PIL.Image.fromarray(img[0].cpu().numpy(), 'RGB').save(f'{outdir}/proj{idx:02d}.png')
